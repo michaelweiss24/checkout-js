@@ -51,6 +51,11 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                         id="cart.item_count_text"
                     />
                 </h3>}
+                <div className='cart-list-header'>
+                    <div className="cart-title product">Product</div>
+                    {/* <div className="product">Product</div> */}
+                    <div className="quantity ">Quantity</div>
+                </div>
 
                 <ul aria-live="polite" className="productList">
                     {[

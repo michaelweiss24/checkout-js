@@ -13,8 +13,7 @@ import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
 import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
-import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
-import OrderSummaryTotal from './OrderSummaryTotal';
+import { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import removeBundledItems from './removeBundledItems';
 
 export interface OrderSummaryProps {
@@ -29,14 +28,8 @@ export interface OrderSummaryProps {
 const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps> = ({
     isTaxIncluded,
     taxes,
-    storeCurrency,
-    shopperCurrency,
     headerLink,
-    additionalLineItems,
-    lineItems,
-    total,
-    ...orderSummarySubtotalsProps
-}) => {
+    lineItems}) => {
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
@@ -50,18 +43,13 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
             <Extension region={ExtensionRegion.SummaryLastItemAfter} />
 
-            <OrderSummarySection>
-                <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
-                {additionalLineItems}
-            </OrderSummarySection>
-
-            <OrderSummarySection>
+            {/* <OrderSummarySection>
                 <OrderSummaryTotal
                     orderAmount={total}
                     shopperCurrencyCode={shopperCurrency.code}
                     storeCurrencyCode={storeCurrency.code}
                 />
-            </OrderSummarySection>
+            </OrderSummarySection> */}
 
             {displayInclusiveTax && <OrderSummarySection>
                 <h5

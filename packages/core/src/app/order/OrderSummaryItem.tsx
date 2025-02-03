@@ -1,8 +1,5 @@
-import classNames from 'classnames';
-import { isNumber } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode } from 'react';
 
-import { ShopperCurrency } from '../currency';
 
 export interface OrderSummaryItemProps {
     id: string | number;
@@ -21,15 +18,14 @@ export interface OrderSummaryItemOption {
 }
 
 const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
-    amount,
-    amountAfterDiscount,
     image,
     name,
     productOptions,
     quantity,
     description,
 }) => (
-    <div className="product" data-test="cart-item">
+    // <div className="product" data-test="cart-item">
+    <div className='product'>
         <figure className="product-column product-figure">{image}</figure>
 
         <div className="product-column product-body">
@@ -37,7 +33,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                 className="product-title optimizedCheckout-contentPrimary"
                 data-test="cart-item-product-title"
             >
-                {`${quantity} x ${name}`}
+                {name}
             </h4>
             {productOptions && productOptions.length > 0 && (
                 <ul
@@ -61,7 +57,13 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
             )}
         </div>
 
-        <div className="product-column product-actions">
+        <div className='product-column product-body quantity'>
+            <span>
+                {`${quantity}` }
+            </span>
+        </div>
+        
+        {/* <div className="product-column product-actions">
             <div
                 className={classNames('product-price', 'optimizedCheckout-contentPrimary', {
                     'product-price--beforeDiscount':
@@ -77,7 +79,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                     <ShopperCurrency amount={amountAfterDiscount} />
                 </div>
             )}
-        </div>
+        </div> */}
     </div>
 );
 

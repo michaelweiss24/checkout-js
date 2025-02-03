@@ -52,11 +52,11 @@
         "cart": {
             "billed_amount_text": "*You will be charged and invoiced {total} ({code}) for this order.",
             "based_on_currency_text": "Based on {total} {code}",
-            "cart_heading": "Order Summary",
+            "cart_heading": "Request Summary",
             "digital_item_text": "Digital Item",
             "discount_text": "Discount",
             "downloads_action": "Go to Downloads",
-            "edit_cart_action": "Edit Cart",
+            "edit_cart_action": "Edit Requests",
             "edit_multi_shipping_cart_message": "New items will default to Shipping Destination #1. Reallocate if you want them shipped to other destinations.",
             "estimated_total_text": "Estimated Total",
             "free_text": "Free",
@@ -78,8 +78,8 @@
             "subtotal_text": "Subtotal",
             "taxes_text": "Taxes",
             "total_text": "Total",
-            "empty_cart_message": "Your cart is empty, you are being redirected. Please <a href=\"{url}\" target=\"_top\">click here</a> if your browser does not redirect you.",
-            "consistency_error": "Your checkout could not be processed because some details have changed. Please review your order and try again."
+            "empty_cart_message": "Your request is empty, you are being redirected. Please <a href=\"{url}\" target=\"_top\">click here</a> if your browser does not redirect you.",
+            "consistency_error": "Your submission could not be processed because some details have changed. Please review your request and try again."
         },
         "common": {
             "back_action": "Back",
