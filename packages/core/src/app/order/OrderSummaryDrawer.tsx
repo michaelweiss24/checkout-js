@@ -8,7 +8,7 @@ import React, { FunctionComponent, memo, ReactNode, useCallback, useMemo } from 
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import { ShopperCurrency } from '../currency';
+// import { ShopperCurrency } from '../currency';
 import { IconGiftCertificate } from '../ui/icon';
 import { ModalTrigger } from '../ui/modal';
 
@@ -127,11 +127,11 @@ const OrderSummaryDrawer: FunctionComponent<
                             <TranslatedString id="cart.show_details_action" />
                         </a>
                     </div>
-                    <div className="cartDrawer-actions">
+                    {/* <div className="cartDrawer-actions">
                         <h3 className="cartDrawer-total optimizedCheckout-headingPrimary">
-                            <ShopperCurrency amount={total} />
+                            Testing
                         </h3>
-                    </div>
+                    </div> */}
                 </div>
             )}
         </ModalTrigger>

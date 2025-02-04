@@ -33,7 +33,7 @@ import { PaymentMethodId } from '../payment/paymentMethod';
 import { Fieldset, Form } from '../ui/form';
 
 import BillingSameAsShippingField from './BillingSameAsShippingField';
-import hasSelectedShippingOptions from './hasSelectedShippingOptions';
+// import hasSelectedShippingOptions from './hasSelectedShippingOptions';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
@@ -153,7 +153,7 @@ class SingleShippingForm extends PureComponent<
             consignments,
             shouldShowOrderComments,
             initialize,
-            isValid,
+            // isValid,
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
@@ -164,10 +164,11 @@ class SingleShippingForm extends PureComponent<
         const { isResettingAddress, isUpdatingShippingData, hasRequestedShippingOptions } =
             this.state;
 
-        const PAYMENT_METHOD_VALID = ['amazonpay'];
-        const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(
-            (method) => method === methodId,
-        );
+        // const PAYMENT_METHOD_VALID = ['amazonpay'];
+        const shouldShowBillingSameAsShipping = false;
+        // const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(
+        //     (method) => method === methodId,
+        // );
 
         return (
             <Form autoComplete="on">
@@ -206,25 +207,27 @@ class SingleShippingForm extends PureComponent<
                     isInitialValueLoaded={isInitialValueLoaded}
                     isLoading={isLoading || isUpdatingShippingData}
                     isMultiShippingMode={false}
-                    shouldDisableSubmit={this.shouldDisableSubmit()}
+                    shouldDisableSubmit={false}
+                    // shouldDisableSubmit={this.shouldDisableSubmit()}
                     shouldShowOrderComments={shouldShowOrderComments}
-                    shouldShowShippingOptions={isValid}
+                    shouldShowShippingOptions={false}
+                    // shouldShowShippingOptions={isValid}
                 />
             </Form>
         );
     }
 
-    private shouldDisableSubmit: () => boolean = () => {
-        const { isLoading, consignments, isValid } = this.props;
+    // private shouldDisableSubmit: () => boolean = () => {
+    //     const { isLoading, consignments, isValid } = this.props;
 
-        const { isUpdatingShippingData } = this.state;
+    //     const { isUpdatingShippingData } = this.state;
 
-        if (!isValid) {
-            return false;
-        }
+    //     if (!isValid) {
+    //         return false;
+    //     }
 
-        return isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments);
-    };
+    //     return isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments);
+    // };
 
     private handleFieldChange: (name: string) => void = async (name) => {
         const { setFieldValue } = this.props;

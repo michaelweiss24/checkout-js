@@ -9,16 +9,16 @@ import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button, IconCloseWithBorder } from '@bigcommerce/checkout/ui';
 
-import { ShopperCurrency } from '../currency';
+// import { ShopperCurrency } from '../currency';
 import { Modal, ModalHeader } from '../ui/modal';
 import { isSmallScreen } from '../ui/responsive';
 
 import OrderModalSummarySubheader from './OrderModalSummarySubheader';
 import OrderSummaryItems from './OrderSummaryItems';
-import OrderSummaryPrice from './OrderSummaryPrice';
+// import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
-import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
-import OrderSummaryTotal from './OrderSummaryTotal';
+import { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
+// import OrderSummaryTotal from './OrderSummaryTotal';
 
 export interface OrderSummaryDrawerProps {
     additionalLineItems?: ReactNode;
@@ -35,27 +35,27 @@ export interface OrderSummaryDrawerProps {
 const OrderSummaryModal: FunctionComponent<
     OrderSummaryDrawerProps & OrderSummarySubtotalsProps
 > = ({
-    additionalLineItems,
-    children,
-    isTaxIncluded,
-    taxes,
+    // additionalLineItems,
+    // children,
+    // isTaxIncluded,
+    // taxes,
     onRequestClose,
     onAfterOpen,
-    storeCurrency,
-    shopperCurrency,
+    // storeCurrency,
+    // shopperCurrency,
     isOpen,
     headerLink,
     items,
-    total,
-    ...orderSummarySubtotalsProps
+    // total,
+    // ...orderSummarySubtotalsProps
 }) => {
-    const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
+    // const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
     const subHeaderText = <OrderModalSummarySubheader
-        amountWithCurrency={<ShopperCurrency amount={total} />}
+        // amountWithCurrency={<ShopperCurrency amount={total} />}
         items={items}
-        shopperCurrencyCode={shopperCurrency.code}
-        storeCurrencyCode={storeCurrency.code}
+        // shopperCurrencyCode={shopperCurrency.code}
+        // storeCurrencyCode={storeCurrency.code}
     />;
 
     const continueButton = isSmallScreen() && <Button
@@ -82,7 +82,7 @@ const OrderSummaryModal: FunctionComponent<
         <OrderSummarySection>
             <OrderSummaryItems displayLineItemsCount={false} items={items} />
         </OrderSummarySection>
-        <OrderSummarySection>
+        {/* <OrderSummarySection>
             <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
             {additionalLineItems}
         </OrderSummarySection>
@@ -110,7 +110,7 @@ const OrderSummaryModal: FunctionComponent<
                         testId="cart-taxes"
                     />
                 ))}
-            </OrderSummarySection>}
+            </OrderSummarySection>} */}
     </Modal>
 };
 

@@ -46,4 +46,12 @@
             flex-basis: 30%;
         }
     }
+    
+    // Set the visibility and height of 'field_25': Questions to hidden and zero to get rid of it on the render.
+
+    .dynamic-form-field--field_25 {
+        visibility: hidden;
+        height: 0;
+    }
+    
 }

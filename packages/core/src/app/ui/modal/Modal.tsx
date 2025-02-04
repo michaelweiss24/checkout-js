@@ -89,6 +89,10 @@ const Modal: FunctionComponent<ModalProps> = ({
                 {children}
             </div>
 
+            {/* <div className="modal-footer" data-test="modal-footer">
+                {footer}
+            </div> */}
+
             {Boolean(footer) && (
                 <div className="modal-footer" data-test="modal-footer">
                     {footer}

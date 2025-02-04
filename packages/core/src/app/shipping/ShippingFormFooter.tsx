@@ -25,7 +25,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     cartHasChanged,
     isMultiShippingMode,
     shouldShowOrderComments,
-    shouldShowShippingOptions = true,
+    shouldShowShippingOptions = false,
     shouldDisableSubmit,
     isInitialValueLoaded,
     isLoading,

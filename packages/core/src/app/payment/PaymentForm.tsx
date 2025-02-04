@@ -1,27 +1,30 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { FormikProps, withFormik, WithFormikConfig } from 'formik';
 import { isNil, noop, omitBy } from 'lodash';
-import React, { FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';
+import React, { FunctionComponent, memo, useMemo } from 'react';
+// import React, { FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { FormContext } from '@bigcommerce/checkout/ui';
+// import { FormContext } from '@bigcommerce/checkout/ui';
 
 import { TermsConditions } from '../termsConditions';
-import { Fieldset, Form } from '../ui/form';
+import { Form } from '../ui/form';
+// import { Fieldset, Form } from '../ui/form';
 
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import {
     getPaymentMethodName,
     getUniquePaymentMethodId,
     PaymentMethodId,
-    PaymentMethodList,
+    // PaymentMethodList,
 } from './paymentMethod';
-import PaymentRedeemables from './PaymentRedeemables';
+// import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField from './SpamProtectionField';
-import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
+// import { StoreCreditOverlay } from './storeCredit';
+// import { StoreCreditField, StoreCreditOverlay } from './storeCredit'; If something doesn't work, revert to this import when undoing changes.
 
 export interface PaymentFormProps {
     availableStoreCredit?: number;
@@ -53,28 +56,28 @@ export interface PaymentFormProps {
 const PaymentForm: FunctionComponent<
     PaymentFormProps & FormikProps<PaymentFormValues> & WithLanguageProps
 > = ({
-    availableStoreCredit = 0,
+    // availableStoreCredit = 0,
     didExceedSpamLimit,
-    isEmbedded,
-    isInitializingPayment,
-    isPaymentDataRequired,
+    // isEmbedded,
+    // isInitializingPayment,
+    // isPaymentDataRequired,
     isTermsConditionsRequired,
-    isStoreCreditApplied,
-    isUsingMultiShipping,
+    // isStoreCreditApplied,
+    // isUsingMultiShipping,
     language,
-    methods,
-    onMethodSelect,
-    onStoreCreditChange,
+    // methods,
+    // onMethodSelect,
+    // onStoreCreditChange,
     onUnhandledError,
-    resetForm,
+    // resetForm,
     selectedMethod,
     shouldDisableSubmit,
     shouldHidePaymentSubmitButton,
     shouldExecuteSpamCheck,
     termsConditionsText = '',
     termsConditionsUrl,
-    usableStoreCredit = 0,
-    values,
+    // usableStoreCredit = 0,
+    // values,
 }) => {
     const selectedMethodId = useMemo(() => {
         if (!selectedMethod) {
@@ -116,7 +119,7 @@ const PaymentForm: FunctionComponent<
 
     return (
         <Form className="checkout-form" testId="payment-form">
-            {usableStoreCredit > 0 && (
+            {/* {usableStoreCredit > 0 && (
                 <StoreCreditField
                     availableStoreCredit={availableStoreCredit}
                     isStoreCreditApplied={isStoreCreditApplied}
@@ -124,9 +127,9 @@ const PaymentForm: FunctionComponent<
                     onChange={onStoreCreditChange}
                     usableStoreCredit={usableStoreCredit}
                 />
-            )}
+            )} */}
 
-            <PaymentMethodListFieldset
+            {/* <PaymentMethodListFieldset
                 isEmbedded={isEmbedded}
                 isInitializingPayment={isInitializingPayment}
                 isPaymentDataRequired={isPaymentDataRequired}
@@ -136,9 +139,9 @@ const PaymentForm: FunctionComponent<
                 onUnhandledError={onUnhandledError}
                 resetForm={resetForm}
                 values={values}
-            />
+            /> */}
 
-            <PaymentRedeemables />
+            {/* <PaymentRedeemables /> */}
 
             {isTermsConditionsRequired && (
                 <TermsConditions
@@ -148,6 +151,11 @@ const PaymentForm: FunctionComponent<
             )}
 
             <div className="form-actions">
+                <div>
+                    <span>
+                        This is where we will put information describing the inquiry process.
+                    </span>
+                </div>
                 {shouldHidePaymentSubmitButton ? (
                     <PaymentMethodSubmitButtonContainer />
                 ) : (
@@ -175,74 +183,74 @@ const PaymentMethodSubmitButtonContainer: FunctionComponent = () => {
     return <div className="submitButtonContainer" id="checkout-payment-continue" />;
 };
 
-interface PaymentMethodListFieldsetProps {
-    isEmbedded?: boolean;
-    isInitializingPayment?: boolean;
-    isUsingMultiShipping?: boolean;
-    methods: PaymentMethod[];
-    values: PaymentFormValues;
-    isPaymentDataRequired(): boolean;
-    onMethodSelect?(method: PaymentMethod): void;
-    onUnhandledError?(error: Error): void;
-    resetForm(nextValues?: PaymentFormValues): void;
-}
+// interface PaymentMethodListFieldsetProps {
+//     isEmbedded?: boolean;
+//     isInitializingPayment?: boolean;
+//     isUsingMultiShipping?: boolean;
+//     methods: PaymentMethod[];
+//     values: PaymentFormValues;
+//     isPaymentDataRequired(): boolean;
+//     onMethodSelect?(method: PaymentMethod): void;
+//     onUnhandledError?(error: Error): void;
+//     resetForm(nextValues?: PaymentFormValues): void;
+// }
 
-const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProps> = ({
-    isEmbedded,
-    isInitializingPayment,
-    isPaymentDataRequired,
-    isUsingMultiShipping,
-    methods,
-    onMethodSelect = noop,
-    onUnhandledError,
-    resetForm,
-    values,
-}) => {
-    const { setSubmitted } = useContext(FormContext);
+// const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProps> = ({
+//     isEmbedded,
+//     isInitializingPayment,
+//     isPaymentDataRequired,
+//     isUsingMultiShipping,
+//     methods,
+//     onMethodSelect = noop,
+//     onUnhandledError,
+//     resetForm,
+//     values,
+// }) => {
+//     const { setSubmitted } = useContext(FormContext);
 
-    const commonValues = useMemo(() => ({ terms: values.terms }), [values.terms]);
+//     const commonValues = useMemo(() => ({ terms: values.terms }), [values.terms]);
 
-    const handlePaymentMethodSelect = useCallback(
-        (method: PaymentMethod) => {
-            resetForm({
-                ...commonValues,
-                ccCustomerCode: '',
-                ccCvv: '',
-                ccDocument: '',
-                customerEmail: '',
-                customerMobile: '',
-                ccExpiry: '',
-                ccName: '',
-                ccNumber: '',
-                instrumentId: '',
-                paymentProviderRadio: getUniquePaymentMethodId(method.id, method.gateway),
-                shouldCreateAccount: true,
-                shouldSaveInstrument: false,
-                accountNumber: '',
-                routingNumber: '',
-            });
+//     const handlePaymentMethodSelect = useCallback(
+//         (method: PaymentMethod) => {
+//             resetForm({
+//                 ...commonValues,
+//                 ccCustomerCode: '',
+//                 ccCvv: '',
+//                 ccDocument: '',
+//                 customerEmail: '',
+//                 customerMobile: '',
+//                 ccExpiry: '',
+//                 ccName: '',
+//                 ccNumber: '',
+//                 instrumentId: '',
+//                 paymentProviderRadio: getUniquePaymentMethodId(method.id, method.gateway),
+//                 shouldCreateAccount: true,
+//                 shouldSaveInstrument: false,
+//                 accountNumber: '',
+//                 routingNumber: '',
+//             });
 
-            setSubmitted(false);
-            onMethodSelect(method);
-        },
-        [commonValues, onMethodSelect, resetForm, setSubmitted],
-    );
+//             setSubmitted(false);
+//             onMethodSelect(method);
+//         },
+//         [commonValues, onMethodSelect, resetForm, setSubmitted],
+//     );
 
-    return (
-        <Fieldset>
-            {!isPaymentDataRequired() && <StoreCreditOverlay />}
+//     return (
+//         <Fieldset>
+//             {!isPaymentDataRequired() && <StoreCreditOverlay />}
 
-            <PaymentMethodList
-                isEmbedded={isEmbedded}
-                isInitializingPayment={isInitializingPayment}
-                isUsingMultiShipping={isUsingMultiShipping}
-                methods={methods}
-                onSelect={handlePaymentMethodSelect}
-                onUnhandledError={onUnhandledError}
-            />
-        </Fieldset>
-    );
-};
+//             <PaymentMethodList
+//                 isEmbedded={isEmbedded}
+//                 isInitializingPayment={isInitializingPayment}
+//                 isUsingMultiShipping={isUsingMultiShipping}
+//                 methods={methods}
+//                 onSelect={handlePaymentMethodSelect}
+//                 onUnhandledError={onUnhandledError}
+//             />
+//         </Fieldset>
+//     );
+// };
 
 const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, PaymentFormValues> =
     {

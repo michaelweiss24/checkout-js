@@ -149,6 +149,12 @@ class OrderConfirmation extends Component<
                             supportPhoneNumber={storePhoneNumber}
                         />
 
+                        <div>
+                            <span>
+                                This is where we will describe what to expect in the process next. Perhaps also describe the benefit of creating an account.
+                            </span>
+                        </div>
+
                         {paymentInstructions && (
                             <OrderConfirmationSection>
                                 <div

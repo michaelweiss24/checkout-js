@@ -5,7 +5,7 @@ import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlan
 
 import { AddressType, StaticAddress } from '../address';
 
-import { StaticShippingOption } from './shippingOption';
+// import { StaticShippingOption } from './shippingOption';
 import './StaticConsignment.scss';
 import StaticConsignmentItemList from './StaticConsignmentItemList';
 
@@ -21,7 +21,8 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
     compactView,
 }) => {
     const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
-    const { shippingAddress: address, selectedShippingOption } = consignment;
+    // const { shippingAddress: address, selectedShippingOption } = consignment;
+    const { shippingAddress: address } = consignment;
     const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
 
     return (
@@ -32,7 +33,7 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
 
             {!compactView && <StaticConsignmentItemList cart={cart} consignment={consignment} />}
 
-            {selectedShippingOption && (
+            {/* {selectedShippingOption && (
                 <div>
                     <div className="shippingOption shippingOption--alt shippingOption--selected">
                         <StaticShippingOption
@@ -41,7 +42,7 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
                         />
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

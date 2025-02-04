@@ -72,7 +72,7 @@ ENV NODE_ENV production
 
 COPY . .
 
-RUN npm run dev
+RUN npm run dev 
 
 # Add execute permission to the entrypoint script
 RUN chmod +x /usr/src/app/build-entrypoint.sh

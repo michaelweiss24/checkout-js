@@ -200,6 +200,7 @@ class Payment extends Component<
                             didExceedSpamLimit={didExceedSpamLimit}
                             isInitializingPayment={isInitializingPayment}
                             isUsingMultiShipping={isUsingMultiShipping}
+                            isPaymentDataRequired={() => false}
                             methods={methods}
                             onMethodSelect={this.setSelectedMethod}
                             onStoreCreditChange={this.handleStoreCreditChange}

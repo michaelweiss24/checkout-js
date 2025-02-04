@@ -21,9 +21,10 @@ import { Extension, ExtensionContextProps, withExtension } from '@bigcommerce/ch
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
+// import { AddressFormSkeleton} from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
-import { StaticBillingAddress } from '../billing';
+// import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { withCheckout } from '../checkout';
 import { CustomError, ErrorModal, isCustomError } from '../common/error';
@@ -52,15 +53,15 @@ import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 
-const Billing = lazy(() =>
-    retry(
-        () =>
-            import(
-                /* webpackChunkName: "billing" */
-                '../billing/Billing'
-            ),
-    ),
-);
+// const Billing = lazy(() =>
+//     retry(
+//         () =>
+//             import(
+//                 /* webpackChunkName: "billing" */
+//                 '../billing/Billing'
+//             ),
+//     ),
+// );
 
 const CartSummary = lazy(() =>
     retry(
@@ -252,8 +253,8 @@ class Checkout extends Component<
 
             const hasMultiShippingEnabled =
                 data.getConfig()?.checkoutSettings.hasMultiShippingEnabled;
-            const checkoutBillingSameAsShippingEnabled =
-                data.getConfig()?.checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true;
+            const checkoutBillingSameAsShippingEnabled = true;
+                // data.getConfig()?.checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true; ## RESET THIS IF WE NEED TO CAPTURE DIFFERENT BILLING INFORMATION
             const defaultNewsletterSignupOption =
                 data.getConfig()?.shopperConfig.defaultNewsletterSignup ??
                 false;
@@ -368,8 +369,8 @@ class Checkout extends Component<
             case CheckoutStepType.Shipping:
                 return this.renderShippingStep(step);
 
-            case CheckoutStepType.Billing:
-                return this.renderBillingStep(step);
+            // case CheckoutStepType.Billing:
+            //     return this.renderBillingStep(step);
 
             case CheckoutStepType.Payment:
                 return this.renderPaymentStep(step);
@@ -459,28 +460,28 @@ class Checkout extends Component<
         );
     }
 
-    private renderBillingStep(step: CheckoutStepStatus): ReactNode {
-        const { billingAddress } = this.props;
+    // private renderBillingStep(step: CheckoutStepStatus): ReactNode {
+    //     const { billingAddress } = this.props;
 
-        return (
-            <CheckoutStep
-                {...step}
-                heading={<TranslatedString id="billing.billing_heading" />}
-                key={step.type}
-                onEdit={this.handleEditStep}
-                onExpanded={this.handleExpanded}
-                summary={billingAddress && <StaticBillingAddress address={billingAddress} />}
-            >
-                <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
-                    <Billing
-                        navigateNextStep={this.navigateToNextIncompleteStep}
-                        onReady={this.handleReady}
-                        onUnhandledError={this.handleUnhandledError}
-                    />
-                </LazyContainer>
-            </CheckoutStep>
-        );
-    }
+    //     return (
+    //         <CheckoutStep
+    //             {...step}
+    //             heading={<TranslatedString id="billing.billing_heading" />}
+    //             key={step.type}
+    //             onEdit={this.handleEditStep}
+    //             onExpanded={this.handleExpanded}
+    //             summary={billingAddress && <StaticBillingAddress address={billingAddress} />}
+    //         >
+    //             <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
+    //                 <Billing
+    //                     navigateNextStep={this.navigateToNextIncompleteStep}
+    //                     onReady={this.handleReady}
+    //                     onUnhandledError={this.handleUnhandledError}
+    //                 />
+    //             </LazyContainer>
+    //         </CheckoutStep>
+    //     );
+    // }
 
     private renderPaymentStep(step: CheckoutStepStatus): ReactNode {
         const { consignments, cart, errorLogger } = this.props;

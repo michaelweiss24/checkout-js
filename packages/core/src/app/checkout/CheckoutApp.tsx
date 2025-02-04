@@ -38,7 +38,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
 
     constructor(props: Readonly<CheckoutAppProps>) {
         super(props);
-
+        console.log(props)
         this.errorLogger = createErrorLogger(
             { sentry: props.sentryConfig },
             {

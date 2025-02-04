@@ -63,6 +63,8 @@ const PLACEHOLDER: AddressKeyMap = {
     countryCode: 'address.select_country_action',
     stateOrProvince: 'address.select_state_action',
     stateOrProvinceCode: 'address.select_state_action',
+    firstName: 'Wikus',
+    lastName: 'van de Merwe',
 };
 
 const AUTOCOMPLETE_FIELD_NAME = 'address1';
