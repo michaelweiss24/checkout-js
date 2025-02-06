@@ -151,15 +151,13 @@ const PaymentForm: FunctionComponent<
             )}
 
             <div className="form-actions">
-                <div>
-                    <span>
-                        This is where we will put information describing the inquiry process.
-                    </span>
+                <div className='optimizedCheckout-callToAction'>
+                    Once a request is submitted, a SmallSat Catalog sales engineer will contact you with information, questions, or quotes within 2 to 3 business days.
                 </div>
                 {shouldHidePaymentSubmitButton ? (
                     <PaymentMethodSubmitButtonContainer />
                 ) : (
-                    <PaymentSubmitButton
+                    <PaymentSubmitButton    
                         brandName={brandName}
                         initialisationStrategyType={
                             selectedMethod && selectedMethod.initializationStrategy?.type

@@ -331,7 +331,6 @@ class Checkout extends Component<
                     <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || extensionState.isShowingLoadingIndicator} />
 
                     <PromotionBannerList promotions={promotions} />
-
                     {isShowingWalletButtonsOnTop && this.state.buttonConfigs?.length > 0 && (
                         <CheckoutButtonContainer
                             checkEmbeddedSupport={this.checkEmbeddedSupport}
@@ -342,6 +341,9 @@ class Checkout extends Component<
                     )}
 
                     <ol className="checkout-steps">
+                        <div className='optimizedCheckout-callToAction top-of-submit'>
+                            Please complete this submission form so the SmallSat Catalog sales team can help you find information and get quotes quickly ahead of your proposals and project deadlines.
+                        </div>
                         {steps
                             .filter((step) => step.isRequired)
                             .map((step) =>

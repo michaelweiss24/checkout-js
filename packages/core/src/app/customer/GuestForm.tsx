@@ -72,6 +72,9 @@ const GuestForm: FunctionComponent<
             id="checkout-customer-guest"
             testId="checkout-customer-guest"
         >
+            {/* <div className='optimizedCheckout-callToAction'>
+                The SmallSat Catalog sales team can help you find information and get quotes quickly ahead of your proposals and project deadlines.
+            </div> */}
             <Fieldset
                 legend={
                     <Legend hidden>

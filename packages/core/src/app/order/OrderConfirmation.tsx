@@ -42,6 +42,7 @@ import OrderConfirmationSection from './OrderConfirmationSection';
 import OrderStatus from './OrderStatus';
 import PrintLink from './PrintLink';
 import ThankYouHeader from './ThankYouHeader';
+// import Stepper from '@mui/material/Stepper'
 
 const OrderSummary = lazy(() =>
     retry(
@@ -132,6 +133,10 @@ class OrderConfirmation extends Component<
             links: { siteLink },
         } = config;
 
+        // const stepperSteps = [
+        //     'Step 1', 'Step 2','Step 3'
+        // ]
+
         return (
             <div
                 className={classNames('layout optimizedCheckout-contentPrimary', {
@@ -150,9 +155,15 @@ class OrderConfirmation extends Component<
                         />
 
                         <div>
-                            <span>
-                                This is where we will describe what to expect in the process next. Perhaps also describe the benefit of creating an account.
-                            </span>
+                            What to expect:
+                            <ul>
+                                <li>
+                                    Orbital Transports will respond to your request within 2 to 3 business days with information, questions, or a quote.
+                                </li>
+                                <li>
+                                    A SmallSat Catalog sales engineer will help you find the most appropriate solutions for your small satellite project needs and help you coordinate your smallsat project supply chain.
+                                </li>
+                            </ul>
                         </div>
 
                         {paymentInstructions && (

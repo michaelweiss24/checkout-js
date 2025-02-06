@@ -143,6 +143,21 @@
         .button:first-child {
             margin-left: 0;
         }
+
+    }
+
+    .optimizedCheckout-callToAction {
+        border: 1px solid #ebebeb;
+        border-radius: 4px;
+        box-shadow: 0 1px 4px 0px rgba(95, 95, 95, 0.14);
+        margin: 1rem;
+        padding: 1rem;
+
+        @media(min-width: 800px) {
+            .top-of-submit {
+                margin: 7rem;
+            }
+        }
     }
 
     .form-body {
