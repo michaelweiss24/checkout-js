@@ -22,14 +22,14 @@ import { withCheckout } from '../checkout';
 import {
     ErrorModal,
     ErrorModalOnCloseProps,
-    isCartChangedError,
+    // isCartChangedError,
     isErrorWithType,
 } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
 import { TermsConditionsType } from '../termsConditions';
 
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
-import mapToOrderRequestBody from './mapToOrderRequestBody';
+// import mapToOrderRequestBody from './mapToOrderRequestBody';
 import PaymentContext from './PaymentContext';
 import PaymentForm from './PaymentForm';
 import {
@@ -443,47 +443,52 @@ class Payment extends Component<
     private handleSubmit: (values: PaymentFormValues) => void = async (values) => {
         const {
             defaultMethod,
-            loadPaymentMethods,
+            // loadPaymentMethods,
             isPaymentDataRequired,
-            onCartChangedError = noop,
-            onSubmit = noop,
-            onSubmitError = noop,
-            submitOrder,
-            analyticsTracker
+            // onCartChangedError = noop,
+            // onSubmit = noop,
+            // onSubmitError = noop,
+            // submitOrder,
+            // analyticsTracker
         } = this.props;
 
         const { selectedMethod = defaultMethod, submitFunctions } = this.state;
+        console.log("Is Payment Required?", {isPaymentDataRequired})
+        console.log("Selected Method :", {selectedMethod})
+        console.log("Submit Functions :", {submitFunctions})
+        
+        console.log("Values: ", {values})
+        
+        // analyticsTracker.clickPayButton({shouldCreateAccount: values.shouldCreateAccount});
 
-        analyticsTracker.clickPayButton({shouldCreateAccount: values.shouldCreateAccount});
+        // const customSubmit =
+        //     selectedMethod &&
+        //     submitFunctions[getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway)];
 
-        const customSubmit =
-            selectedMethod &&
-            submitFunctions[getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway)];
+        // if (customSubmit) {
+        //     return customSubmit(values);
+        // }
 
-        if (customSubmit) {
-            return customSubmit(values);
-        }
+        // try {
+        //     const state = await submitOrder(mapToOrderRequestBody(values, isPaymentDataRequired()));
+        //     const order = state.data.getOrder();
 
-        try {
-            const state = await submitOrder(mapToOrderRequestBody(values, isPaymentDataRequired()));
-            const order = state.data.getOrder();
+        //     analyticsTracker.paymentComplete();
 
-            analyticsTracker.paymentComplete();
+        //     onSubmit(order?.orderId);
+        // } catch (error) {
+        //     analyticsTracker.paymentRejected();
 
-            onSubmit(order?.orderId);
-        } catch (error) {
-            analyticsTracker.paymentRejected();
+        //     if (isErrorWithType(error) && error.type === 'payment_method_invalid') {
+        //         return loadPaymentMethods();
+        //     }
 
-            if (isErrorWithType(error) && error.type === 'payment_method_invalid') {
-                return loadPaymentMethods();
-            }
+        //     if (isCartChangedError(error)) {
+        //         return onCartChangedError(error);
+        //     }
 
-            if (isCartChangedError(error)) {
-                return onCartChangedError(error);
-            }
-
-            onSubmitError(error);
-        }
+        //     onSubmitError(error);
+        // }
     };
 
     private setSelectedMethod: (method?: PaymentMethod) => void = (method) => {

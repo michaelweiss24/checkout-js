@@ -20,7 +20,10 @@ import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { Extension, ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
+import { 
+    // AddressFormSkeleton, 
+    ChecklistSkeleton 
+} from '@bigcommerce/checkout/ui';
 // import { AddressFormSkeleton} from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
@@ -32,7 +35,7 @@ import { retry } from '../common/utility';
 import {
     CheckoutButtonContainer,
     CheckoutSuggestion,
-    Customer,
+    // Customer,
     CustomerInfo,
     CustomerSignOutEvent,
     CustomerViewType,
@@ -52,6 +55,7 @@ import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
+import CombinedStep from '../customer/CombinedStep';
 
 // const Billing = lazy(() =>
 //     retry(
@@ -93,15 +97,15 @@ const Payment = lazy(() =>
     ),
 );
 
-const Shipping = lazy(() =>
-    retry(
-        () =>
-            import(
-                /* webpackChunkName: "shipping" */
-                '../shipping/Shipping'
-            ),
-    ),
-);
+// const Shipping = lazy(() =>
+//     retry(
+//         () =>
+//             import(
+//                 /* webpackChunkName: "shipping" */
+//                 '../shipping/Shipping'
+//             ),
+//     ),
+// );
 
 export interface CheckoutProps {
     checkoutId: string;
@@ -342,7 +346,7 @@ class Checkout extends Component<
 
                     <ol className="checkout-steps">
                         <div className='optimizedCheckout-callToAction top-of-submit'>
-                            Please complete this submission form so the SmallSat Catalog sales team can help you find information and get quotes quickly ahead of your proposals and project deadlines.
+                            Please complete this submission form to access pricing information, technical data, and more. Orbital Transports will ensure you get the necessary data for your design or proposal and help you procure hardware and services ahead of project deadlines.
                         </div>
                         {steps
                             .filter((step) => step.isRequired)
@@ -366,29 +370,52 @@ class Checkout extends Component<
     private renderStep(step: CheckoutStepStatus): ReactNode {
         switch (step.type) {
             case CheckoutStepType.Customer:
-                return this.renderCustomerStep(step);
+                console.log('Customer')
+                return null;
 
             case CheckoutStepType.Shipping:
-                return this.renderShippingStep(step);
+                console.log('Shipping')
+                return null;
 
             // case CheckoutStepType.Billing:
             //     return this.renderBillingStep(step);
 
             case CheckoutStepType.Payment:
+                // console.log('Payment')
                 return this.renderPaymentStep(step);
+
+            case CheckoutStepType.Combined:
+                // console.log('Combined')
+                return this.renderCombinedStep(step);
 
             default:
                 return null;
         }
     }
 
-    private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
-        const { isGuestEnabled, isShowingWalletButtonsOnTop } = this.props;
+    private renderCombinedStep(step: CheckoutStepStatus): ReactNode {
+        const { 
+            isGuestEnabled,
+            isShowingWalletButtonsOnTop,
+            hasCartChanged,
+            cart,
+            consignments = [],
+            isNewMultiShippingUIEnabled,
+            errorLogger,
+            loginUrl,
+            cartUrl
+        } = this.props;
         const {
             customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
             isSubscribed,
+            isBillingSameAsShipping,
+            isMultiShippingMode
         } = this.state;
-
+        
+        if (!cart) {
+            return;
+        }
+        
         return (
             <CheckoutStep
                 {...step}
@@ -398,69 +425,132 @@ class Checkout extends Component<
                 onExpanded={this.handleExpanded}
                 suggestion={<CheckoutSuggestion />}
                 summary={
-                    <CustomerInfo
-                        onSignOut={this.handleSignOut}
-                        onSignOutError={this.handleError}
-                    />
+                    <>
+                        <CustomerInfo
+                            onSignOut={this.handleSignOut}
+                            onSignOutError={this.handleError}
+                        />
+                        <ShippingSummary
+                            cart={cart}
+                            consignments={consignments}
+                            isMultiShippingMode={isMultiShippingMode}
+                            isNewMultiShippingUIEnabled={isNewMultiShippingUIEnabled}
+                        />
+                    </>
                 }
             >
-                <Customer
+                <CombinedStep
                     checkEmbeddedSupport={this.checkEmbeddedSupport}
                     isEmbedded={isEmbedded()}
                     isSubscribed={isSubscribed}
-                    isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
+                    isWalletButtonsOnTop={isShowingWalletButtonsOnTop}
                     onAccountCreated={this.navigateToNextIncompleteStep}
                     onChangeViewType={this.setCustomerViewType}
                     onContinueAsGuest={this.navigateToNextIncompleteStep}
                     onContinueAsGuestError={this.handleError}
-                    onReady={this.handleReady}
-                    onSignIn={this.navigateToNextIncompleteStep}
                     onSignInError={this.handleError}
                     onSubscribeToNewsletter={this.handleNewsletterSubscription}
                     onUnhandledError={this.handleUnhandledError}
                     onWalletButtonClick={this.handleWalletButtonClick}
+                    cartHasChanged={hasCartChanged}
+                    isBillingSameAsShipping={isBillingSameAsShipping}
+                    isMultiShippingMode={isMultiShippingMode}
+                    navigateNextStep={this.handleShippingNextStep}
+                    onCreateAccount={this.handleShippingCreateAccount}
+                    onReady={this.handleReady}
+                    onSignIn={this.handleShippingSignIn}
+                    onSignOut={this.handleSignOut}
+                    onSignOutError={this.handleError}
+                    onToggleMultiShipping={this.handleToggleMultiShipping}
                     step={step}
                     viewType={customerViewType}
-                />
+                    errorLogger={errorLogger}
+                    isPriceHiddenFromGuests={false}
+                    loginUrl={loginUrl}
+                    cartUrl={cartUrl}
+                    isCartEmpty={false}                />
             </CheckoutStep>
-        );
-    }
+    )}
 
-    private renderShippingStep(step: CheckoutStepStatus): ReactNode {
-        const { hasCartChanged, cart, consignments = [], isNewMultiShippingUIEnabled } = this.props;
+    // private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
+    //     const { isGuestEnabled, isShowingWalletButtonsOnTop } = this.props;
+    //     const {
+    //         customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
+    //         isSubscribed,
+    //     } = this.state;
 
-        const { isBillingSameAsShipping, isMultiShippingMode } = this.state;
+    //     return (
+    //         <CheckoutStep
+    //             {...step}
+    //             heading={<TranslatedString id="customer.customer_heading" />}
+    //             key={step.type}
+    //             onEdit={this.handleEditStep}
+    //             onExpanded={this.handleExpanded}
+    //             suggestion={<CheckoutSuggestion />}
+    //             summary={
+    //                 <CustomerInfo
+    //                     onSignOut={this.handleSignOut}
+    //                     onSignOutError={this.handleError}
+    //                 />
+    //             }
+    //         >
+    //             <Customer
+    //                 checkEmbeddedSupport={this.checkEmbeddedSupport}
+    //                 isEmbedded={isEmbedded()}
+    //                 isSubscribed={isSubscribed}
+    //                 isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
+    //                 onAccountCreated={this.navigateToNextIncompleteStep}
+    //                 onChangeViewType={this.setCustomerViewType}
+    //                 onContinueAsGuest={this.navigateToNextIncompleteStep}
+    //                 onContinueAsGuestError={this.handleError}
+    //                 onReady={this.handleReady}
+    //                 onSignIn={this.navigateToNextIncompleteStep}
+    //                 onSignInError={this.handleError}
+    //                 onSubscribeToNewsletter={this.handleNewsletterSubscription}
+    //                 onUnhandledError={this.handleUnhandledError}
+    //                 onWalletButtonClick={this.handleWalletButtonClick}
+    //                 step={step}
+    //                 viewType={customerViewType}
+    //             />
+    //         </CheckoutStep>
+    //     );
+    // }
 
-        if (!cart) {
-            return;
-        }
+    // private renderShippingStep(step: CheckoutStepStatus): ReactNode {
+    //     const { hasCartChanged, cart, consignments = [], isNewMultiShippingUIEnabled } = this.props;
 
-        return (
-            <CheckoutStep
-                {...step}
-                heading={<TranslatedString id="shipping.shipping_heading" />}
-                key={step.type}
-                onEdit={this.handleEditStep}
-                onExpanded={this.handleExpanded}
-                summary={<ShippingSummary cart={cart} consignments={consignments} isMultiShippingMode={isMultiShippingMode} isNewMultiShippingUIEnabled={isNewMultiShippingUIEnabled} />}
-            >
-                <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
-                    <Shipping
-                        cartHasChanged={hasCartChanged}
-                        isBillingSameAsShipping={isBillingSameAsShipping}
-                        isMultiShippingMode={isMultiShippingMode}
-                        navigateNextStep={this.handleShippingNextStep}
-                        onCreateAccount={this.handleShippingCreateAccount}
-                        onReady={this.handleReady}
-                        onSignIn={this.handleShippingSignIn}
-                        onToggleMultiShipping={this.handleToggleMultiShipping}
-                        onUnhandledError={this.handleUnhandledError}
-                        step={step}
-                    />
-                </LazyContainer>
-            </CheckoutStep>
-        );
-    }
+    //     const { isBillingSameAsShipping, isMultiShippingMode } = this.state;
+
+    //     if (!cart) {
+    //         return;
+    //     }
+
+    //     return (
+    //         <CheckoutStep
+    //             {...step}
+    //             heading={<TranslatedString id="shipping.shipping_heading" />}
+    //             key={step.type}
+    //             onEdit={this.handleEditStep}
+    //             onExpanded={this.handleExpanded}
+    //             summary={<ShippingSummary cart={cart} consignments={consignments} isMultiShippingMode={isMultiShippingMode} isNewMultiShippingUIEnabled={isNewMultiShippingUIEnabled} />}
+    //         >
+    //             <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
+    //                 <Shipping
+    //                     cartHasChanged={hasCartChanged}
+    //                     isBillingSameAsShipping={isBillingSameAsShipping}
+    //                     isMultiShippingMode={isMultiShippingMode}
+    //                     navigateNextStep={this.handleShippingNextStep}
+    //                     onCreateAccount={this.handleShippingCreateAccount}
+    //                     onReady={this.handleReady}
+    //                     onSignIn={this.handleShippingSignIn}
+    //                     onToggleMultiShipping={this.handleToggleMultiShipping}
+    //                     onUnhandledError={this.handleUnhandledError}
+    //                     step={step}
+    //                 />
+    //             </LazyContainer>
+    //         </CheckoutStep>
+    //     );
+    // }
 
     // private renderBillingStep(step: CheckoutStepStatus): ReactNode {
     //     const { billingAddress } = this.props;
@@ -545,6 +635,66 @@ class Checkout extends Component<
             </MobileView>
         );
     }
+
+    // private renderCombinedStep(step: CheckoutStepStatus): ReactNode {
+    //     const { isGuestEnabled, isShowingWalletButtonsOnTop, hasCartChanged } = this.props;
+    //     const {
+    //         customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
+    //         isSubscribed,
+    //         isBillingSameAsShipping,
+    //         isMultiShippingMode
+    //     } = this.state;
+
+    //     return (
+    //         <CheckoutStep
+    //             {...step}
+    //             heading={<TranslatedString id="customer.customer_heading" />}
+    //             key={step.type}
+    //             onEdit={this.handleEditStep}
+    //             onExpanded={this.handleExpanded}
+    //             suggestion={<CheckoutSuggestion />}
+    //             summary={
+    //                 <CustomerInfo
+    //                     onSignOut={this.handleSignOut}
+    //                     onSignOutError={this.handleError}
+    //                 />
+    //             }
+    //         >
+    //             <Customer
+    //                 checkEmbeddedSupport={this.checkEmbeddedSupport}
+    //                 isEmbedded={isEmbedded()}
+    //                 isSubscribed={isSubscribed}
+    //                 isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
+    //                 onAccountCreated={this.navigateToNextIncompleteStep}
+    //                 onChangeViewType={this.setCustomerViewType}
+    //                 onContinueAsGuest={this.navigateToNextIncompleteStep}
+    //                 onContinueAsGuestError={this.handleError}
+    //                 onReady={this.handleReady}
+    //                 onSignIn={this.navigateToNextIncompleteStep}
+    //                 onSignInError={this.handleError}
+    //                 onSubscribeToNewsletter={this.handleNewsletterSubscription}
+    //                 onUnhandledError={this.handleUnhandledError}
+    //                 onWalletButtonClick={this.handleWalletButtonClick}
+    //                 step={step}
+    //                 viewType={customerViewType}
+    //             />
+    //             <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
+    //                 <Shipping
+    //                     cartHasChanged={hasCartChanged}
+    //                     isBillingSameAsShipping={isBillingSameAsShipping}
+    //                     isMultiShippingMode={isMultiShippingMode}
+    //                     navigateNextStep={this.handleShippingNextStep}
+    //                     onCreateAccount={this.handleShippingCreateAccount}
+    //                     onReady={this.handleReady}
+    //                     onSignIn={this.handleShippingSignIn}
+    //                     onToggleMultiShipping={this.handleToggleMultiShipping}
+    //                     onUnhandledError={this.handleUnhandledError}
+    //                     step={step}
+    //                 />
+    //             </LazyContainer>
+    //         </CheckoutStep>
+    //     );
+    // }
 
     private navigateToStep(type: CheckoutStepType, options?: { isDefault?: boolean }): void {
         const { clearError, error, steps } = this.props;
@@ -720,7 +870,7 @@ class Checkout extends Component<
             }
         }
 
-        this.navigateToStep(CheckoutStepType.Customer);
+        this.navigateToStep(CheckoutStepType.Combined);
     };
 
     private handleShippingNextStep: (isBillingSameAsShipping: boolean) => void = (
@@ -753,8 +903,10 @@ class Checkout extends Component<
 
             return;
         }
-
-        this.navigateToStep(CheckoutStepType.Customer);
+        console.log('Navigating to CheckoutStepType: Combined')
+        this.navigateToStep(CheckoutStepType.Combined);
+        console.log('customerViewType:');
+        console.log(customerViewType);
         this.setState({ customerViewType });
     };
 

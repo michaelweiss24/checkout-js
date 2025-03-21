@@ -169,6 +169,7 @@ const PaymentSubmitButton: FunctionComponent<
         size={ButtonSize.Large}
         type="submit"
         variant={ButtonVariant.Action}
+        style={{margin: '0'}}
     >
         <PaymentSubmitButtonText
             brandName={brandName}

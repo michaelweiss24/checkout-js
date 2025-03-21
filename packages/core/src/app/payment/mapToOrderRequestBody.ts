@@ -15,8 +15,11 @@ export default function mapToOrderRequestBody(
     isPaymentDataRequired: boolean,
 ): OrderRequestBody {
     if (!isPaymentDataRequired) {
+        console.log('No Payment Data Required. mapToOrderRequestBody returns an empty set.')
         return {};
     }
+
+    console.log("Values: ", {values})
 
     const { paymentProviderRadio, ...rest } = values;
     const { methodId, gatewayId } = parseUniquePaymentMethodId(paymentProviderRadio);

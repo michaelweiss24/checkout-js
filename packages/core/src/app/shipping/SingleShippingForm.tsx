@@ -153,7 +153,7 @@ class SingleShippingForm extends PureComponent<
             consignments,
             shouldShowOrderComments,
             initialize,
-            // isValid,
+            isValid,
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
@@ -210,8 +210,8 @@ class SingleShippingForm extends PureComponent<
                     shouldDisableSubmit={false}
                     // shouldDisableSubmit={this.shouldDisableSubmit()}
                     shouldShowOrderComments={shouldShowOrderComments}
-                    shouldShowShippingOptions={false}
-                    // shouldShowShippingOptions={isValid}
+                    // shouldShowShippingOptions={true}
+                    shouldShowShippingOptions={isValid}
                 />
             </Form>
         );
@@ -225,6 +225,9 @@ class SingleShippingForm extends PureComponent<
     //     if (!isValid) {
     //         return false;
     //     }
+    //     console.log("isLoading? : ", isLoading);
+    //     console.log("isUpdatingShippingData? : ", isUpdatingShippingData);
+    //     console.log("hasSelectedShippingOptions? : ", hasSelectedShippingOptions(consignments));
 
     //     return isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments);
     // };
@@ -278,7 +281,7 @@ class SingleShippingForm extends PureComponent<
 
     private handleAddressSelect: (address: Address) => void = async (address) => {
         const { updateAddress, onUnhandledError = noop, values, setValues } = this.props;
-
+        console.log('Calling handleAddressSelect')
         this.setState({ isResettingAddress: true });
 
         try {

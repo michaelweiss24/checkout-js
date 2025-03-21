@@ -72,7 +72,7 @@ ENV NODE_ENV production
 
 COPY . .
 
-RUN npm run dev 
+# RUN npm run dev 
 
 # Add execute permission to the entrypoint script
 RUN chmod +x /usr/src/app/build-entrypoint.sh
@@ -84,8 +84,8 @@ ENTRYPOINT ["/usr/src/app/build-entrypoint.sh"]
 EXPOSE 8080
 
 ## PUT THIS URL BACK INTO THE CUSTOM CHECKOUT URL ON THE BG CONSOLE
-## webdav:checkout/auto-loader-1.557.5.js
+## webdav:checkout/auto-loader-1.558.1.js
 ## URL FOR TESTING
-## http://127.0.0.1:8080/auto-loader-1.557.4.js
+## http://127.0.0.1:8080/auto-loader-dev.js
 # Run the application.
 # CMD npm run dev && npm run dev:server

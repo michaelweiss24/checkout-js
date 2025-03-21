@@ -7,7 +7,7 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 import { PayPalFastlaneWatermark } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
-import { Button, ButtonVariant } from '../ui/button';
+// import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
 
 import EmailField from './EmailField';
@@ -49,7 +49,7 @@ const GuestForm: FunctionComponent<
 > = ({
     canSubscribe,
     checkoutButtons,
-    continueAsGuestButtonLabelId,
+    // continueAsGuestButtonLabelId,
     isLoading,
     onChangeEmail,
     onShowLogin,
@@ -58,7 +58,10 @@ const GuestForm: FunctionComponent<
     isExpressPrivacyPolicy,
     isFloatingLabelEnabled,
     shouldShowEmailWatermark,
+    // handleSubmit,
+    submitForm
 }) => {
+    
     const renderField = useCallback(
         (fieldProps: FieldProps<boolean>) => (
             <SubscribeField {...fieldProps} requiresMarketingConsent={requiresMarketingConsent} />
@@ -71,6 +74,7 @@ const GuestForm: FunctionComponent<
             className="checkout-form"
             id="checkout-customer-guest"
             testId="checkout-customer-guest"
+            onBlur={submitForm}
         >
             {/* <div className='optimizedCheckout-callToAction'>
                 The SmallSat Catalog sales team can help you find information and get quotes quickly ahead of your proposals and project deadlines.
@@ -98,16 +102,6 @@ const GuestForm: FunctionComponent<
                             'customerEmail-floating--enabled': isFloatingLabelEnabled,
                         })}
                     >
-                        <Button
-                            className="customerEmail-button"
-                            id="checkout-customer-continue"
-                            isLoading={isLoading}
-                            testId="customer-continue-as-guest-button"
-                            type="submit"
-                            variant={ButtonVariant.Primary}
-                        >
-                            <TranslatedString id={continueAsGuestButtonLabelId} />
-                        </Button>
                     </div>
                 </div>
 

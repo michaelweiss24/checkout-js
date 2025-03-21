@@ -2,12 +2,12 @@ import { CheckoutPayment, CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { compact } from 'lodash';
 import { createSelector } from 'reselect';
 
-import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
+// import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 
 import { isValidAddress } from '../address';
 import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 import { SUPPORTED_METHODS } from '../customer';
-import { PaymentMethodId } from '../payment/paymentMethod';
+// import { PaymentMethodId } from '../payment/paymentMethod';
 import {
     hasSelectedShippingOptions,
     hasUnassignedLineItems,
@@ -20,64 +20,64 @@ import CheckoutStepType from './CheckoutStepType';
 // it uses its own components in the customer and shipping steps, unfortunately in order to preserve the UX
 // when reloading the checkout page it's necessary to refill the stripe components with the information saved.
 // In this step, we require that the customer strategy be reloaded the first time.
-const getStripeLinkAndCheckoutPageIsReloaded = (
-    isUsingWallet: boolean,
-    hasEmail: boolean,
-    isGuest: boolean,
-    shouldUseStripeLinkByMinimumAmount: boolean,
-    providerWithCustomCheckout?: string | null,
-) => {
-    return !isUsingWallet && providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest && shouldUseStripeLinkByMinimumAmount;
-}
+// const getStripeLinkAndCheckoutPageIsReloaded = (
+//     isUsingWallet: boolean,
+//     hasEmail: boolean,
+//     isGuest: boolean,
+//     shouldUseStripeLinkByMinimumAmount: boolean,
+//     providerWithCustomCheckout?: string | null,
+// ) => {
+//     return !isUsingWallet && providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest && shouldUseStripeLinkByMinimumAmount;
+// }
 
-const getCustomerStepStatus = createSelector(
-    ({ data }: CheckoutSelectors) => data.getCheckout(),
-    ({ data }: CheckoutSelectors) => data.getCustomer(),
-    ({ data }: CheckoutSelectors) => data.getBillingAddress(),
-    ({ data }: CheckoutSelectors) => data.getConfig(),
-    ({ data }: CheckoutSelectors) => data.getCart(),
-    ({ data }: CheckoutSelectors) => data.getPaymentProviderCustomer(),
-    (checkout, customer, billingAddress, config, cart, paymentProviderCustomer) => {
-        const hasEmail = !!(
-            (customer && customer.email) ||
-            (billingAddress && billingAddress.email)
-        );
-        const isUsingWallet =
-            checkout && checkout.payments
-                ? checkout.payments.some(
-                    (payment: CheckoutPayment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
-                  )
-                : false;
-        const isGuest = !!(customer && customer.isGuest);
-        const isComplete = hasEmail || isUsingWallet;
-        const isEditable = isComplete && !isUsingWallet && isGuest;
-        const isUsingStripeLinkAndCheckoutPageIsReloaded = getStripeLinkAndCheckoutPageIsReloaded(
-            isUsingWallet,
-            hasEmail,
-            isGuest,
-            cart ? shouldUseStripeLinkByMinimumAmount(cart) : false,
-            config?.checkoutSettings.providerWithCustomCheckout,
-        );
+// const getCustomerStepStatus = createSelector(
+//     ({ data }: CheckoutSelectors) => data.getCheckout(),
+//     ({ data }: CheckoutSelectors) => data.getCustomer(),
+//     ({ data }: CheckoutSelectors) => data.getBillingAddress(),
+//     ({ data }: CheckoutSelectors) => data.getConfig(),
+//     ({ data }: CheckoutSelectors) => data.getCart(),
+//     ({ data }: CheckoutSelectors) => data.getPaymentProviderCustomer(),
+//     (checkout, customer, billingAddress, config, cart, paymentProviderCustomer) => {
+//         const hasEmail = !!(
+//             (customer && customer.email) ||
+//             (billingAddress && billingAddress.email)
+//         );
+//         const isUsingWallet =
+//             checkout && checkout.payments
+//                 ? checkout.payments.some(
+//                     (payment: CheckoutPayment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
+//                   )
+//                 : false;
+//         const isGuest = !!(customer && customer.isGuest);
+//         const isComplete = hasEmail || isUsingWallet;
+//         const isEditable = isComplete && !isUsingWallet && isGuest;
+//         const isUsingStripeLinkAndCheckoutPageIsReloaded = getStripeLinkAndCheckoutPageIsReloaded(
+//             isUsingWallet,
+//             hasEmail,
+//             isGuest,
+//             cart ? shouldUseStripeLinkByMinimumAmount(cart) : false,
+//             config?.checkoutSettings.providerWithCustomCheckout,
+//         );
 
-        if (isUsingStripeLinkAndCheckoutPageIsReloaded) {
-            return {
-                type: CheckoutStepType.Customer,
-                isActive: false,
-                isComplete: paymentProviderCustomer?.stripeLinkAuthenticationState !== undefined,
-                isEditable,
-                isRequired: true,
-            };
-        }
+//         if (isUsingStripeLinkAndCheckoutPageIsReloaded) {
+//             return {
+//                 type: CheckoutStepType.Customer,
+//                 isActive: false,
+//                 isComplete: paymentProviderCustomer?.stripeLinkAuthenticationState !== undefined,
+//                 isEditable,
+//                 isRequired: true,
+//             };
+//         }
 
-        return {
-            type: CheckoutStepType.Customer,
-            isActive: false,
-            isComplete,
-            isEditable,
-            isRequired: true,
-        };
-    },
-);
+//         return {
+//             type: CheckoutStepType.Customer,
+//             isActive: false,
+//             isComplete,
+//             isEditable,
+//             isRequired: true,
+//         };
+//     },
+// );
 
 const getBillingStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getCheckout(),
@@ -179,51 +179,51 @@ const getBillingStepStatus = createSelector(
     },
 );
 
-const getShippingStepStatus = createSelector(
-    ({ data }: CheckoutSelectors) => data.getShippingAddress(),
-    ({ data }: CheckoutSelectors) => data.getConsignments(),
-    ({ data }: CheckoutSelectors) => data.getCart(),
-    ({ data }: CheckoutSelectors) => {
-        const shippingAddress = data.getShippingAddress();
+// const getShippingStepStatus = createSelector(
+//     ({ data }: CheckoutSelectors) => data.getShippingAddress(),
+//     ({ data }: CheckoutSelectors) => data.getConsignments(),
+//     ({ data }: CheckoutSelectors) => data.getCart(),
+//     ({ data }: CheckoutSelectors) => {
+//         const shippingAddress = data.getShippingAddress();
 
-        return shippingAddress
-            ? data.getShippingAddressFields(shippingAddress.countryCode)
-            : EMPTY_ARRAY;
-    },
-    ({ data }: CheckoutSelectors) => data.getConfig(),
-    (shippingAddress, consignments, cart, shippingAddressFields, config) => {
-        const validateAddressFields =
-            isExperimentEnabled(
-                config?.checkoutSettings,
-                'CHECKOUT-7560.address_fields_max_length_validation'
-            );
-        const hasAddress = shippingAddress
-            ? isValidAddress(shippingAddress, shippingAddressFields, validateAddressFields)
-            : false;
-        const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
-        const hasUnassignedItems =
-            cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
-        const isComplete = hasAddress && hasOptions && !hasUnassignedItems;
-        const isRequired = itemsRequireShipping(cart, config);
-        const isCustomShippingSelected =
-            isExperimentEnabled(
-                config?.checkoutSettings,
-                'PROJECT-5015.manual_order.display_custom_shipping',
-            ) &&
-            hasOptions &&
-            consignments?.some(
-                ({ selectedShippingOption }) => selectedShippingOption?.type === 'custom',
-            );
+//         return shippingAddress
+//             ? data.getShippingAddressFields(shippingAddress.countryCode)
+//             : EMPTY_ARRAY;
+//     },
+//     ({ data }: CheckoutSelectors) => data.getConfig(),
+//     (shippingAddress, consignments, cart, shippingAddressFields, config) => {
+//         const validateAddressFields =
+//             isExperimentEnabled(
+//                 config?.checkoutSettings,
+//                 'CHECKOUT-7560.address_fields_max_length_validation'
+//             );
+//         const hasAddress = shippingAddress
+//             ? isValidAddress(shippingAddress, shippingAddressFields, validateAddressFields)
+//             : false;
+//         const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
+//         const hasUnassignedItems =
+//             cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
+//         const isComplete = hasAddress && hasOptions && !hasUnassignedItems;
+//         const isRequired = itemsRequireShipping(cart, config);
+//         const isCustomShippingSelected =
+//             isExperimentEnabled(
+//                 config?.checkoutSettings,
+//                 'PROJECT-5015.manual_order.display_custom_shipping',
+//             ) &&
+//             hasOptions &&
+//             consignments?.some(
+//                 ({ selectedShippingOption }) => selectedShippingOption?.type === 'custom',
+//             );
 
-        return {
-            type: CheckoutStepType.Shipping,
-            isActive: false,
-            isComplete,
-            isEditable: isComplete && isRequired && !isCustomShippingSelected,
-            isRequired,
-        };
-    },
-);
+//         return {
+//             type: CheckoutStepType.Shipping,
+//             isActive: false,
+//             isComplete,
+//             isEditable: isComplete && isRequired && !isCustomShippingSelected,
+//             isRequired,
+//         };
+//     },
+// );
 
 const getPaymentStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getOrder(),
@@ -245,16 +245,218 @@ const getOrderSubmitStatus = createSelector(
     (status) => status,
 );
 
+const getCombinedStepStatus = createSelector(
+    ({ data }: CheckoutSelectors) => data.getCheckout(),
+    ({ data }: CheckoutSelectors) => data.getCustomer(),
+    ({ data }: CheckoutSelectors) => data.getBillingAddress(),
+    ({ data }: CheckoutSelectors) => data.getConfig(),
+    ({ data }: CheckoutSelectors) => data.getCart(),
+    // ({ data }: CheckoutSelectors) => data.getPaymentProviderCustomer(),
+    ({ data }: CheckoutSelectors) => data.getShippingAddress(),
+    ({ data }: CheckoutSelectors) => data.getConsignments(),
+    ({ data }: CheckoutSelectors) => {
+        const shippingAddress = data.getShippingAddress();
+
+        return shippingAddress
+            ? data.getShippingAddressFields(shippingAddress.countryCode)
+            : EMPTY_ARRAY;
+    },
+    
+    
+    
+    (
+        checkout,
+        customer,
+        billingAddress,
+        config,
+        cart,
+        // paymentProviderCustomer,
+        shippingAddress,
+        consignments,
+        shippingAddressFields
+    ) => {
+        // Combined logic for both customer and shipping steps
+        const hasEmail = !!(
+            (customer && customer.email) ||
+            (billingAddress && billingAddress.email)
+        );
+        const isUsingWallet =
+            checkout && checkout.payments
+                ? checkout.payments.some(
+                    (payment: CheckoutPayment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
+                )
+                : false;
+        const isGuest = !!(customer && customer.isGuest);
+        const isCustomerComplete = hasEmail || isUsingWallet;
+        const isCustomerEditable = isCustomerComplete && !isUsingWallet && isGuest;
+        // const isUsingStripeLinkAndCheckoutPageIsReloaded = getStripeLinkAndCheckoutPageIsReloaded(
+        //     isUsingWallet,
+        //     hasEmail,
+        //     isGuest,
+        //     cart ? shouldUseStripeLinkByMinimumAmount(cart) : false,
+        //     config?.checkoutSettings.providerWithCustomCheckout,
+        // );
+
+        const validateAddressFields =
+            isExperimentEnabled(
+                config?.checkoutSettings,
+                'CHECKOUT-7560.address_fields_max_length_validation'
+            );
+        const hasAddress = shippingAddress
+            ? isValidAddress(shippingAddress, shippingAddressFields, validateAddressFields)
+            : false;
+        const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
+        const hasUnassignedItems =
+            cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
+        const isShippingComplete = hasAddress && hasOptions && !hasUnassignedItems;
+        const isShippingRequired = itemsRequireShipping(cart, config);
+        const isCustomShippingSelected =
+            isExperimentEnabled(
+                config?.checkoutSettings,
+                'PROJECT-5015.manual_order.display_custom_shipping',
+            ) &&
+            hasOptions &&
+            consignments?.some(
+                ({ selectedShippingOption }) => selectedShippingOption?.type === 'custom',
+            );
+
+        // if (isUsingStripeLinkAndCheckoutPageIsReloaded) {
+        //     return {
+        //         type: CheckoutStepType.Combined,
+        //         isActive: false,
+        //         isComplete: paymentProviderCustomer?.stripeLinkAuthenticationState !== undefined && isShippingComplete,
+        //         isEditable: isCustomerEditable && isShippingComplete && isShippingRequired && !isCustomShippingSelected,
+        //         isRequired: true,
+        //     };
+        // }
+
+        return {
+            type: CheckoutStepType.Combined,
+            isActive: false,
+            isComplete: isCustomerComplete && isShippingComplete,
+            isEditable: isCustomerEditable && isShippingComplete && isShippingRequired && !isCustomShippingSelected,
+            isRequired: true,
+        };
+    }
+);
+
+
+// const getCombinedStepStatus = createSelector(
+//     ({ data }: CheckoutSelectors) => data.getCheckout(),
+//     ({ data }: CheckoutSelectors) => data.getCustomer(),
+//     ({ data }: CheckoutSelectors) => data.getBillingAddress(),
+//     ({ data }: CheckoutSelectors) => data.getConfig(),
+//     ({ data }: CheckoutSelectors) => data.getCart(),
+//     ({ data }: CheckoutSelectors) => data.getPaymentProviderCustomer(),
+//     // ({ data }: CheckoutSelectors) => data.getShippingAddress(),
+//     ({ data }: CheckoutSelectors) => data.getConsignments(),
+//     // ({ data }: CheckoutSelectors) => data.getCart(),
+//     ({ data }: CheckoutSelectors) => {
+//         const shippingAddress = data.getShippingAddress();
+
+//         return shippingAddress
+//             ? data.getShippingAddressFields(shippingAddress.countryCode)
+//             : EMPTY_ARRAY;
+//     },
+//     // ({ data }: CheckoutSelectors) => data.getConfig(),
+//     (shippingAddress, consignments, cart, shippingAddressFields, config) => {
+//         const validateAddressFields =
+//             isExperimentEnabled(
+//                 config?.checkoutSettings,
+//                 'CHECKOUT-7560.address_fields_max_length_validation'
+//             );
+//         const hasAddress = shippingAddress
+//             ? isValidAddress(shippingAddress, shippingAddressFields, validateAddressFields)
+//             : false;
+//         const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
+//         const hasUnassignedItems =
+//             cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
+//         const isComplete = hasAddress && hasOptions && !hasUnassignedItems;
+//         const isRequired = itemsRequireShipping(cart, config);
+//         const isCustomShippingSelected =
+//             isExperimentEnabled(
+//                 config?.checkoutSettings,
+//                 'PROJECT-5015.manual_order.display_custom_shipping',
+//             ) &&
+//             hasOptions &&
+//             consignments?.some(
+//                 ({ selectedShippingOption }) => selectedShippingOption?.type === 'custom',
+//             );
+
+//         return {
+//             type: CheckoutStepType.Shipping,
+//             isActive: false,
+//             isComplete,
+//             isEditable: isComplete && isRequired && !isCustomShippingSelected,
+//             isRequired,
+//         };
+//     },
+//     (checkout, customer, billingAddress, config, cart, paymentProviderCustomer) => {
+//         const hasEmail = !!(
+//             (customer && customer.email) ||
+//             (billingAddress && billingAddress.email)
+//         );
+//         const isUsingWallet =
+//             checkout && checkout.payments
+//                 ? checkout.payments.some(
+//                     (payment: CheckoutPayment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
+//                   )
+//                 : false;
+//         const isGuest = !!(customer && customer.isGuest);
+//         const isComplete = hasEmail || isUsingWallet;
+//         const isEditable = isComplete && !isUsingWallet && isGuest;
+//         const isUsingStripeLinkAndCheckoutPageIsReloaded = getStripeLinkAndCheckoutPageIsReloaded(
+//             isUsingWallet,
+//             hasEmail,
+//             isGuest,
+//             cart ? shouldUseStripeLinkByMinimumAmount(cart) : false,
+//             config?.checkoutSettings.providerWithCustomCheckout,
+//         );
+
+//         if (isUsingStripeLinkAndCheckoutPageIsReloaded) {
+//             return {
+//                 type: CheckoutStepType.Customer,
+//                 isActive: false,
+//                 isComplete: paymentProviderCustomer?.stripeLinkAuthenticationState !== undefined,
+//                 isEditable,
+//                 isRequired: true,
+//             };
+//         }
+
+//         return {
+//             type: CheckoutStepType.Customer,
+//             isActive: false,
+//             isComplete,
+//             isEditable,
+//             isRequired: true,
+//         };
+// );
+
 const getCheckoutStepStatuses = createSelector(
-    getCustomerStepStatus,
-    getShippingStepStatus,
+    getCombinedStepStatus,
+    // getCustomerStepStatus,
+    // getShippingStepStatus,
     getBillingStepStatus,
     getPaymentStepStatus,
     getOrderSubmitStatus,
-    (customerStep, shippingStep, billingStep, paymentStep, orderStatus) => {
+    (
+        combinedStep,
+        // customerStep, 
+        // shippingStep, 
+        billingStep, 
+        paymentStep, 
+        orderStatus
+    ) => {
         const isSubmittingOrder = orderStatus;
 
-        const steps = compact([customerStep, shippingStep, billingStep, paymentStep]);
+        const steps = compact(
+            [
+                combinedStep, 
+                // customerStep, 
+                // shippingStep, 
+                billingStep, 
+                paymentStep
+            ]);
 
         const defaultActiveStep =
             steps.find((step) => !step.isComplete && step.isRequired) || steps[steps.length - 1];

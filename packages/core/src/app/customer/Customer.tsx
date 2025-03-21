@@ -82,7 +82,7 @@ export interface WithCheckoutCustomerProps {
     signInEmail?: SignInEmail;
     signInEmailError?: Error;
     isAccountCreationEnabled: boolean;
-    isPaymentDataRequired: boolean;
+    isPaymentDataRequired: boolean | (() => boolean);
     createAccountError?: Error;
     signInError?: Error;
     isFloatingLabelEnabled?: boolean;
@@ -105,6 +105,32 @@ export interface CustomerState {
     isReady: boolean;
     hasRequestedLoginEmail: boolean;
 }
+
+// Define the TestForm component
+const TestForm = () => (
+    <form>
+        <div>
+            <label>Name:</label>
+            <input type="text" name="name" />
+        </div>
+        <div>
+            <label>Email:</label>
+            <input type="email" name="email" />
+        </div>
+        <div>
+            <label>Business:</label>
+            <input type="text" name="business" />
+        </div>
+        <div>
+            <label>Address:</label>
+            <input type="text" name="address" />
+        </div>
+        <div>
+            <label>Order Comments:</label>
+            <textarea name="orderComments"></textarea>
+        </div>
+    </form>
+);
 
 class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & AnalyticsContextProps, CustomerState> {
     state: CustomerState = {
@@ -159,6 +185,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         const shouldRenderGuestForm = viewType === CustomerViewType.Guest;
         const shouldRenderCreateAccountForm = viewType === CustomerViewType.CreateAccount;
         const shouldRenderLoginForm = !shouldRenderGuestForm && !shouldRenderCreateAccountForm;
+        const shouldRenderTestForm = false;
+        // const shouldRenderAddressForm = false;
 
         return (
             <CustomerSkeleton isLoading={!isReady}>
@@ -166,9 +194,15 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 {shouldRenderLoginForm && this.renderLoginForm()}
                 {shouldRenderGuestForm && this.renderGuestForm()}
                 {shouldRenderCreateAccountForm && this.renderCreateAccountForm()}
+                {shouldRenderTestForm && <TestForm />}
+                {/* {shouldRenderAddressForm && this.renderAddressForm()} */}
             </CustomerSkeleton>
         );
     }
+
+    // private renderAddressForm(): ReactNode {
+
+    // }
 
     private renderGuestForm(): ReactNode {
         const {
@@ -509,6 +543,9 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
         this.draftEmail = email;
         analyticsTracker.customerEmailEntry(email);
+
+        // Print a statement to the console
+        console.log(`Email changed to: ${email}`);
     };
 
     private handleShowLogin: () => void = () => {

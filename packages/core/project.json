@@ -22,7 +22,7 @@
     "dev": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "webpack --mode development"
+        "command": "webpack --mode development --watch"
       },
       "dependsOn": [
         {

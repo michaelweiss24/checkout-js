@@ -93,7 +93,7 @@ export interface WithCheckoutShippingProps {
     shouldRenderStripeForm: boolean;
 }
 
-interface ShippingState {
+export interface ShippingState {
     isInitializing: boolean;
     isMultiShippingUnavailableModalOpen: boolean;
 }

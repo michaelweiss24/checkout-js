@@ -1,5 +1,9 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo } from 'react';
+import React, { 
+    FunctionComponent,
+    memo, 
+    // useEffect 
+} from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -28,36 +32,47 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
     addresses,
     onSelectAddress,
     onUseNewAddress,
-    selectedAddress,
+    selectedAddress = addresses?.[0],
     type,
-}) => (
-    <ul className="dropdown-menu instrumentSelect-dropdownMenu" id="addressDropdown">
-        <li className="dropdown-menu-item dropdown-menu-item--select">
-            <a
-                data-test="add-new-address"
-                href="#"
-                onClick={preventDefault(() => onUseNewAddress(selectedAddress))}
-            >
-                <TranslatedString id="address.enter_address_action" />
-            </a>
-        </li>
-        {addresses.map((address) => (
-            <li
-                className="dropdown-menu-item dropdown-menu-item--select"
-                data-test="address-select-option"
-                key={address.id}
-            >
+}) => {
+    // preventDefault(() => onSelectAddress(selectedAddress))
+    // console.log('Called onSelectAddress')
+    // useEffect(() => {
+    //     // Automatically select the first address when addresses are available
+    //     if (addresses && addresses.length > 0) {
+    //         onSelectAddress(addresses[0]);
+    //     }
+    // }, []); // Dependencies ensure this runs when `addresses` changes
+
+    return (
+        <ul className="dropdown-menu instrumentSelect-dropdownMenu" id="addressDropdown">
+            <li className="dropdown-menu-item dropdown-menu-item--select">
                 <a
-                    data-test="address-select-option-action"
+                    data-test="add-new-address"
                     href="#"
-                    onClick={preventDefault(() => onSelectAddress(address))}
+                    onClick={preventDefault(() => onUseNewAddress(selectedAddress))}
                 >
-                    <StaticAddress address={address} type={type} />
+                    <TranslatedString id="address.enter_address_action" />
                 </a>
             </li>
-        ))}
-    </ul>
-);
+            {addresses.map((address) => (
+                <li
+                    className="dropdown-menu-item dropdown-menu-item--select"
+                    data-test="address-select-option"
+                    key={address.id}
+                >
+                    <a
+                        data-test="address-select-option-action"
+                        href="#"
+                        onClick={preventDefault(() => onSelectAddress(address))}
+                    >
+                        <StaticAddress address={address} type={type} />
+                    </a>
+                </li>
+            ))}
+        </ul>
+    )
+};
 
 const AddressSelect = ({
     addresses,

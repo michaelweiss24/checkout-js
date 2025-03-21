@@ -13,6 +13,7 @@ import { Fieldset } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
 
 import { SingleShippingFormValues } from './SingleShippingForm';
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 
 export interface ShippingAddressFormProps {
     addresses: CustomerAddress[];
@@ -62,6 +63,13 @@ class ShippingAddressForm extends Component<
             formFields,
             validateAddressFields,
         );
+
+        console.log("hasAddresses? :", hasAddresses)
+        console.log("hasValidCustomerAddress? :", hasValidCustomerAddress)
+        preventDefault(() => onAddressSelect(addresses[0]))
+        // if (hasAddresses && hasValidCustomerAddress) {
+        //     onAddressSelect(addresses[0])
+        // }
 
         return (
             <Fieldset id="checkoutShippingAddress">

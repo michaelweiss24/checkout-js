@@ -17,7 +17,7 @@ services:
       - 8080:8080
     develop:
       watch:
-        - action: rebuild
+        - action: sync
           path: ./packages
           target: /usr/src/app/packages
   # server:

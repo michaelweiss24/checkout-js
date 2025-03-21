@@ -108,6 +108,10 @@ const PaymentForm: FunctionComponent<
         );
     }, [selectedMethod]);
 
+    const callToActionStyle: React.CSSProperties = {
+        margin: "1rem"
+    };
+
     if (shouldExecuteSpamCheck) {
         return (
             <SpamProtectionField
@@ -151,8 +155,8 @@ const PaymentForm: FunctionComponent<
             )}
 
             <div className="form-actions">
-                <div className='optimizedCheckout-callToAction'>
-                    Once a request is submitted, a SmallSat Catalog sales engineer will contact you with information, questions, or quotes within 2 to 3 business days.
+                <div className='optimizedCheckout-callToAction' style={callToActionStyle}>
+                    Once you submit your request, Orbital Transports will respond to you with pricing information, technical data, or questions within 3 business days.
                 </div>
                 {shouldHidePaymentSubmitButton ? (
                     <PaymentMethodSubmitButtonContainer />
