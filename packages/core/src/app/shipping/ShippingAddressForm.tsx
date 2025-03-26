@@ -64,8 +64,8 @@ class ShippingAddressForm extends Component<
             validateAddressFields,
         );
 
-        console.log("hasAddresses? :", hasAddresses)
-        console.log("hasValidCustomerAddress? :", hasValidCustomerAddress)
+        // console.log("hasAddresses? :", hasAddresses)
+        // console.log("hasValidCustomerAddress? :", hasValidCustomerAddress)
         preventDefault(() => onAddressSelect(addresses[0]))
         // if (hasAddresses && hasValidCustomerAddress) {
         //     onAddressSelect(addresses[0])

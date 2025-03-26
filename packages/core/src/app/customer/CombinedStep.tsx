@@ -889,23 +889,23 @@ class CombinedStep extends Component<CustomerProps & WithCheckoutCustomerProps &
                 shippingAddress,
                 billingAddress,
                 methodId,
-                email
+                // email
             } = this.props;
             
-            console.log("Address Values: ", {addressValues});
+            // console.log("Address Values: ", {addressValues});
 
             const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);
 
-            console.log("Updated Shipping Address Values: ", {updatedShippingAddress});
+            // console.log("Updated Shipping Address Values: ", {updatedShippingAddress});
 
             const promises: Array<Promise<CheckoutSelectors>> = [];
 
-            console.log("MethodID: ", {methodId});
+            // console.log("MethodID: ", {methodId});
 
             const hasRemoteBilling = this.hasRemoteBilling(methodId);
 
-            console.log("hasRemoteBilling: ", {hasRemoteBilling});
-            console.log("Email: ", {email});
+            // console.log("hasRemoteBilling: ", {hasRemoteBilling});
+            // console.log("Email: ", {email});
     
             if (!isEqualAddress(updatedShippingAddress, shippingAddress) || shippingAddress?.shouldSaveAddress !== updatedShippingAddress?.shouldSaveAddress) {
                 promises.push(updateShippingAddress(updatedShippingAddress || {}));
